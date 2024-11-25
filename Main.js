@@ -1,26 +1,41 @@
 import * as THREE from 'three';
 import SolarSystemGenerator from './SolarSystemGenerator.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+const controls = new OrbitControls( camera, renderer.domElement );
 
-const solarSystemGenerator = new SolarSystemGenerator();
+camera.position.set(0,20,100);
+controls.update();
+// const solarSystemGenerator = new SolarSystemGenerator();
 
-const sphere = solarSystemGenerator.generatePlanets();
+// const sphere = solarSystemGenerator.generateStars();
 
-scene.add(sphere);
+function generateStars() {
+    const geometry = new THREE.SphereGeometry(0.25,24,24);
+    const material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    const star = new THREE.Mesh(geometry,material);
 
-camera.position.z = 5;
+    const [x,y,z] = Array(3).fill().map(()=>THREE.MathUtils.randFloatSpread(200));
 
-function animate() {
-    sphere.rotation.x += 0.01;
-    sphere.rotation.y += 0.01;
+    star.position.set(x,y,z);    
 
-    // sphere.material.opacity = 0.5 + 0.5 * Math.sin(Date.now() * 0.002);
+    star.rotation.x = 0.5;
+    star.rotation.y = 0.5
+
+    scene.add(star);
+}
+
+Array(200).fill().forEach(generateStars);
+
+function animate() {  
+    controls.update();
     renderer.render(scene, camera);
 }
 renderer.setAnimationLoop(animate);

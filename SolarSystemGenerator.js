@@ -1,50 +1,46 @@
 import * as THREE from 'three';
 
-export default class SolarSystemGenerator{
-    constructor()
-    {   
+export default class SolarSystemGenerator {
+    constructor(scene) {
+        this.scene = scene;
     }
 
-    backgroundGenerator(){
-        
+    backgroundGenerator() {
+
     }
 
-    generatePlanets(){
+    generatePlanets() {
         const geometry = new THREE.SphereGeometry();
-        const material = new THREE.MeshBasicMaterial({color: 0x7F00FF, transparent:true ,opacity:1});
-        const sphere = new THREE.Mesh(geometry,material);
+        const material = new THREE.MeshBasicMaterial({ color: 0x7F00FF, transparent: true, opacity: 1 });
+        const sphere = new THREE.Mesh(geometry, material);
 
         return sphere;
     }
 
-    generateNumbersOfSpheres(){
-        var number = Math.random(3,10);
+    generateNumbersOfSpheres() {
+        var number = Math.random(3, 10);
 
         return number;
     }
 
-    generateStars(){
-        const stars = [Math.random(50,100)];
+    generateStars() {
+        const geometry = new THREE.SphereGeometry(0.25,24,24);
+        const material = new THREE.MeshStandardMaterial({color: 0xffffff});
+        const star = new THREE.Mesh(geometry,material);
 
-        let numbersOfStars = stars.length;
+        const [x,y,z] = Array(3).fill().map(()=>THREE.MathUtils.randFloatSpread(200));
 
-        for (let i = 0; i < numbersOfStars; i++){
-            const geometry = new THREE.SphereGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
-        const sphere = new THREE.Mesh(geometry,material);
+        star.position.set(x,y,z);     
 
-        stars.concat(sphere);
-        }
-
-        return stars;       
+       
     }
 
-    randomColourGenerator(){
-        
-    }
 
-    randomPlacementGenerator(){
+    randomColourGenerator(numberOfColours) {
 
     }
 
+    randomPlacementGenerator() {
+
+    }
 }
